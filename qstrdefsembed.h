@@ -41,4 +41,5 @@ Q(lcd_refresh_wait)
 Q(lcd_forced_refresh)
 Q(lcd_refresh_lines)
 Q(bitblt24)
+Q(lcd_fill_rect)
 

@@ -81,6 +81,20 @@ STATIC mp_obj_t dmcp_bitblt24(size_t n_args, const mp_obj_t *args) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(dmcp_bitblt24_obj, 6, 6, dmcp_bitblt24);
 
+// TODO: lcd_line_addr(int y)
+
+// void lcd_fill_rect (uint32_t x, uint32_t y, uint32_t dx, uint32_t dy, int val)
+STATIC mp_obj_t dmcp_lcd_fill_rect(size_t n_args, const mp_obj_t *args) {
+    (void)n_args; // not used; always 5
+    int x   = mp_obj_get_int(args[0]);
+    int y   = mp_obj_get_int(args[1]);
+    int dx  = mp_obj_get_int(args[2]);
+    int dy  = mp_obj_get_int(args[3]);
+    int val = mp_obj_get_int(args[4]);
+    lcd_fill_rect(x, y, dx, dy, val);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(dmcp_lcd_fill_rect_obj, 5, 5, dmcp_lcd_fill_rect);
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -100,6 +114,7 @@ STATIC const mp_rom_map_elem_t dmcp_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_lcd_forced_refresh), MP_ROM_PTR(&dmcp_lcd_forced_refresh_obj) },
     { MP_ROM_QSTR(MP_QSTR_lcd_refresh_lines), MP_ROM_PTR(&dmcp_lcd_refresh_lines_obj) },
     { MP_ROM_QSTR(MP_QSTR_bitblt24), MP_ROM_PTR(&dmcp_bitblt24_obj) },
+    { MP_ROM_QSTR(MP_QSTR_lcd_fill_rect), MP_ROM_PTR(&dmcp_lcd_fill_rect_obj) },
 };
 STATIC MP_DEFINE_CONST_DICT(dmcp_module_globals, dmcp_module_globals_table);
 
