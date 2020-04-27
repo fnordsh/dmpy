@@ -96,6 +96,47 @@ STATIC mp_obj_t dmcp_lcd_fill_rect(size_t n_args, const mp_obj_t *args) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(dmcp_lcd_fill_rect_obj, 5, 5, dmcp_lcd_fill_rect);
 
+// void lcd_fillLine (int ln, uint8_t val)
+STATIC mp_obj_t dmcp_lcd_fillLine(mp_obj_t ln_obj, mp_obj_t val_obj) {
+    int ln = mp_obj_get_int(ln_obj);
+    int val = mp_obj_get_int(val_obj);
+    lcd_fillLine(ln, val);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_2(dmcp_lcd_fillLine_obj, dmcp_lcd_fillLine);
+
+// void lcd_fillLines (int ln, uint8_t val, int cnt)
+STATIC mp_obj_t dmcp_lcd_fillLines(mp_obj_t ln_obj, mp_obj_t val_obj, mp_obj_t cnt_obj) {
+    int ln = mp_obj_get_int(ln_obj);
+    int val = mp_obj_get_int(val_obj);
+    int cnt = mp_obj_get_int(cnt_obj);
+    lcd_fillLines(ln, val, cnt);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_3(dmcp_lcd_fillLines_obj, dmcp_lcd_fillLines);
+
+// void lcd_set_buf_cleared (int val)
+STATIC mp_obj_t dmcp_lcd_set_buf_cleared(mp_obj_t val_obj) {
+    int val = mp_obj_get_int(val_obj);
+    lcd_set_buf_cleared(val);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_lcd_set_buf_cleared_obj, dmcp_lcd_set_buf_cleared);
+
+// int lcd_get_buf_cleared ()
+STATIC mp_obj_t dmcp_lcd_get_buf_cleared() {
+    return mp_obj_new_int(lcd_get_buf_cleared());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_lcd_get_buf_cleared_obj, dmcp_lcd_get_buf_cleared);
+
+// uint8_t reverse_byte(uint8_t x)
+STATIC mp_obj_t dmcp_reverse_byte(mp_obj_t x_obj) {
+    int x = mp_obj_get_int(x_obj);
+    return mp_obj_new_int(reverse_byte(x));
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_reverse_byte_obj, dmcp_reverse_byte);
+
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -115,6 +156,11 @@ STATIC const mp_rom_map_elem_t dmcp_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_lcd_refresh_lines), MP_ROM_PTR(&dmcp_lcd_refresh_lines_obj) },
     { MP_ROM_QSTR(MP_QSTR_bitblt24), MP_ROM_PTR(&dmcp_bitblt24_obj) },
     { MP_ROM_QSTR(MP_QSTR_lcd_fill_rect), MP_ROM_PTR(&dmcp_lcd_fill_rect_obj) },
+    { MP_ROM_QSTR(MP_QSTR_lcd_fillLine), MP_ROM_PTR(&dmcp_lcd_fillLine_obj) },
+    { MP_ROM_QSTR(MP_QSTR_lcd_fillLines), MP_ROM_PTR(&dmcp_lcd_fillLines_obj) },
+    { MP_ROM_QSTR(MP_QSTR_lcd_set_buf_cleared), MP_ROM_PTR(&dmcp_lcd_set_buf_cleared_obj) },
+    { MP_ROM_QSTR(MP_QSTR_lcd_get_buf_cleared), MP_ROM_PTR(&dmcp_lcd_get_buf_cleared_obj) },
+    { MP_ROM_QSTR(MP_QSTR_reverse_byte), MP_ROM_PTR(&dmcp_reverse_byte_obj) },
 };
 STATIC MP_DEFINE_CONST_DICT(dmcp_module_globals, dmcp_module_globals_table);
 
