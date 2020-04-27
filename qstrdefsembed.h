@@ -33,7 +33,6 @@ Q(foo)
 Q(bar)
 
 Q(dmcp)
-Q(add_ints)
 Q(lcd_for_calc)
 Q(lcd_clear_buf)
 Q(lcd_refresh)
@@ -41,4 +40,5 @@ Q(lcd_refresh_dma)
 Q(lcd_refresh_wait)
 Q(lcd_forced_refresh)
 Q(lcd_refresh_lines)
+Q(bitblt24)
 
