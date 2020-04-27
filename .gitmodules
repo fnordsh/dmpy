@@ -1,0 +1,8 @@
+[submodule "DMCP_SDK"]
+	path = DMCP_SDK
+	url = https://github.com/swissmicros/DMCP_SDK.git
+	branch = master
+[submodule "micropython"]
+	path = micropython
+	url = https://github.com/micropython/micropython
+	branch = master
