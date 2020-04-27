@@ -74,56 +74,42 @@ void program_main() {
     // register dmcp module
     mp_module_register(MP_QSTR_dmcp, MP_OBJ_FROM_PTR(&module_dmcp));
 
-    // import dmcp module
-    if (execute_from_str("import dmcp")) { 
-        lcd_putsAt(t24, 1, "import dmcp error");
+    FIL f;
+    FRESULT fr = f_open(&f, "test.py", FA_READ);
+    char strbuf[128];
+    if(fr) {
+        snprintf(strbuf, 128, "Could not open test.py (%d)", fr);
+        lcd_putsAt(t24, 2, strbuf);
+        lcd_refresh();
     } else {
-        lcd_putsAt(t24, 1, "import dmcp ok");
+        FSIZE_t fsize = f_size(&f);
+        snprintf(strbuf, 128, "Loading test.py (%lu bytes)", fsize);
+        lcd_putsAt(t24, 2, strbuf);
+        lcd_refresh();
+
+        char *filebuf = malloc(fsize+1);
+        if(filebuf==0) {
+            snprintf(strbuf, 128, "could not allocate memory");
+            lcd_putsAt(t24, 3, strbuf);
+            lcd_refresh();
+        } else {
+            unsigned int read_bytes;
+            f_read(&f, filebuf, fsize, &read_bytes);
+            filebuf[fsize]=0;
+            snprintf(strbuf, 128, "read %u bytes", read_bytes);
+            lcd_putsAt(t24, 3, strbuf);
+            lcd_refresh();
+
+            if(execute_from_str(filebuf)) {
+                snprintf(strbuf, 128, "python error");
+                lcd_putsAt(t24, 4, strbuf);
+                lcd_refresh();
+            }
+            free(filebuf);
+        }
     }
-    lcd_refresh();
 
-    // Set some global variables.
-    //const char str_set_global[] = "foo = dmcp.add_ints(12,11)\nbar = 50-8\nhellotext = ' '.join(['Hello', 'Micro', 'Python']).replace('o P', 'oP')";
-    const char str_set_global[] =
-        "foo = dmcp.add_ints(12,11)\n"
-        "bar = 50-8\n"
-        "hellotext = ' '.join(['Hello', 'Micro', 'Python']).replace('o P', 'oP')";
-
-    if (execute_from_str(str_set_global)) {
-        lcd_putsAt(t24, 2, "set global error");
-    }
-    lcd_refresh();
-
-    // Try some other stuff
-    if (execute_from_str("dmcp.lcd_for_calc(8)")) {
-        lcd_putsAt(t24, 6, "test error");
-    }
-    lcd_refresh();
-
-    char charbuf[256];
-    // Read back the global variables (see qstrdefsembed.h for where the QSTR is defined).
-    if (nlr_push(&nlr) == 0) {
-        mp_obj_dict_t *globals = mp_globals_get();
-        mp_obj_t v;
-
-        v = mp_obj_dict_get(MP_OBJ_FROM_PTR(globals), MP_ROM_QSTR(MP_QSTR_hellotext));
-        lcd_putsAt(t24, 2, mp_obj_str_get_str(v));
-
-        v = mp_obj_dict_get(MP_OBJ_FROM_PTR(globals), MP_ROM_QSTR(MP_QSTR_foo));
-        snprintf(charbuf, 256, "foo = %d\n", mp_obj_get_int(v));
-        lcd_putsAt(t24, 4, charbuf);
-
-        v = mp_obj_dict_get(MP_OBJ_FROM_PTR(globals), MP_ROM_QSTR(MP_QSTR_bar));
-        snprintf(charbuf, 256, "bar = %d\n", mp_obj_get_int(v));
-        lcd_putsAt(t24, 5, charbuf);
-
-        nlr_pop();
-    } else {
-        // uncaught exception
-        lcd_putsAt(t24, 4, "read global error");
-    }
-    lcd_refresh();
-
+    /*
     // Simple exception handling.
     if (nlr_push(&nlr) == 0) {
         lcd_putsAt(t24, 6, "Raising a test exception...");
@@ -135,6 +121,7 @@ void program_main() {
         mp_obj_t exc = (mp_obj_t)nlr.ret_val;
         mp_obj_print_exception(&mp_plat_print, exc);
     }
+    */
 
     // Deinitialise MicroPython.
     mp_deinit();
