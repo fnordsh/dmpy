@@ -94,6 +94,12 @@ void program_main() {
     }
     lcd_refresh();
 
+    // Try some other stuff
+    if (execute_from_str("dmcp.lcd_for_calc(8)")) {
+        lcd_putsAt(t24, 6, "test error");
+    }
+    lcd_refresh();
+
     char charbuf[256];
     // Read back the global variables (see qstrdefsembed.h for where the QSTR is defined).
     if (nlr_push(&nlr) == 0) {
