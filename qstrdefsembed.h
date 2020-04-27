@@ -28,10 +28,6 @@
 
 // *FORMAT-OFF*
 
-Q(hellotext)
-Q(foo)
-Q(bar)
-
 Q(dmcp)
 Q(lcd_for_calc)
 Q(lcd_clear_buf)
@@ -48,3 +44,5 @@ Q(lcd_set_buf_cleared)
 Q(lcd_get_buf_cleared)
 Q(reverse_byte)
 
+Q(dmpy)
+Q(lcd_putsAt20)

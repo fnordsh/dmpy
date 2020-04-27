@@ -16,6 +16,7 @@
 #include "py/objmodule.h"
 
 #include "module_dmcp.h"
+#include "module_dmpy.h"
 
 // Use a fixed static buffer for the heap.
 //static char heap[16384];
@@ -71,8 +72,9 @@ void program_main() {
 
     nlr_buf_t nlr;
 
-    // register dmcp module
+    // register modules
     mp_module_register(MP_QSTR_dmcp, MP_OBJ_FROM_PTR(&module_dmcp));
+    mp_module_register(MP_QSTR_dmpy, MP_OBJ_FROM_PTR(&module_dmpy));
 
     FIL f;
     FRESULT fr = f_open(&f, "test.py", FA_READ);

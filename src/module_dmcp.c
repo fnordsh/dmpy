@@ -136,6 +136,10 @@ STATIC mp_obj_t dmcp_reverse_byte(mp_obj_t x_obj) {
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_reverse_byte_obj, dmcp_reverse_byte);
 
 
+///// LCD and draw functions / Text functions /////
+
+// TODO
+
 
 //////////////////////////////////////////////////////////////////////////////
 
