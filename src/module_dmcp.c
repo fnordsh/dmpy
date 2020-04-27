@@ -67,7 +67,6 @@ STATIC mp_obj_t dmcp_lcd_refresh_lines(mp_obj_t ln_obj, mp_obj_t cnt_obj) {
 STATIC MP_DEFINE_CONST_FUN_OBJ_2(dmcp_lcd_refresh_lines_obj, dmcp_lcd_refresh_lines);
 
 // void bitblt24(uint32_t x, uint32_t dx, uint32_t y, uint32_t val, int blt_op, int fill)
-//STATIC mp_obj_t dmcp_bitblt24(mp_obj_t x_obj, mp_obj_t dx_obj, mp_obj_t y_obj, mp_obj_t val_obj, mp_obj_t blt_op_obj, mp_obj_t fill_obj) {
 STATIC mp_obj_t dmcp_bitblt24(size_t n_args, const mp_obj_t *args) {
     (void)n_args; // not used; always 6
     int x      = mp_obj_get_int(args[0]);
