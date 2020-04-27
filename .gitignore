@@ -1,0 +1,6 @@
+# .gitignore
+
+.dep
+build
+build-libmicropython
+
