@@ -20,7 +20,7 @@
 
 // Use a fixed static buffer for the heap.
 //static char heap[16384];
-static char heap[6384];
+static char *heap;
 
 mp_obj_t execute_from_str(const char *str) {
     nlr_buf_t nlr;
@@ -58,6 +58,8 @@ int _open() {
 
 
 void program_main() {
+    char strbuf[128];
+
     lcd_clear_buf();
     lcd_writeClr(t24);
     lcd_putsR(t24, "MicroPython Test");
@@ -65,7 +67,14 @@ void program_main() {
 
     // Configure stack limit and heap (with our static buffer).
     mp_stack_set_limit(40000 * (BYTES_PER_WORD / 4));
-    gc_init(heap, heap + sizeof(heap));
+    int heapsize = 16384;
+    while ((heap=malloc(heapsize)) == 0) {
+        heapsize /= 2;
+    }
+    snprintf(strbuf, 128, "heap: %d bytes", heapsize);
+    lcd_putsAt(t24, 1, strbuf);
+    lcd_refresh();
+    gc_init(heap, heap + heapsize);
 
     // Initialise MicroPython.
     mp_init();
@@ -78,14 +87,13 @@ void program_main() {
 
     FIL f;
     FRESULT fr = f_open(&f, "test.py", FA_READ);
-    char strbuf[128];
     if(fr) {
         snprintf(strbuf, 128, "Could not open test.py (%d)", fr);
         lcd_putsAt(t24, 2, strbuf);
         lcd_refresh();
     } else {
         FSIZE_t fsize = f_size(&f);
-        snprintf(strbuf, 128, "Loading test.py (%lu bytes)", fsize);
+        snprintf(strbuf, 128, "loading test.py (%lu bytes)", fsize);
         lcd_putsAt(t24, 2, strbuf);
         lcd_refresh();
 
@@ -97,14 +105,17 @@ void program_main() {
         } else {
             unsigned int read_bytes;
             f_read(&f, filebuf, fsize, &read_bytes);
+            f_close(&f);
             filebuf[fsize]=0;
             snprintf(strbuf, 128, "read %u bytes", read_bytes);
             lcd_putsAt(t24, 3, strbuf);
+            lcd_putsAt(t24, 4, "press any key to start");
             lcd_refresh();
+            wait_for_key_press();
 
             if(execute_from_str(filebuf)) {
                 snprintf(strbuf, 128, "python error");
-                lcd_putsAt(t24, 4, strbuf);
+                lcd_putsAt(t24, 5, strbuf);
                 lcd_refresh();
             }
             free(filebuf);
