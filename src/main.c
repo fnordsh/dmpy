@@ -104,6 +104,30 @@ int _open() {
     return 0;
 }
 
+mp_import_stat_t mp_import_stat(const char *path) {
+    mp_import_stat_t result = MP_IMPORT_STAT_NO_EXIST;
+
+    FIL f;
+    FRESULT fr = f_open(&f, path, FA_READ);
+    if(fr==FR_OK) {
+        f_close(&f);
+        result=MP_IMPORT_STAT_FILE;
+    } else {
+        snprintf(strbuf, sizeof(strbuf), "%s/", path);
+        fr = f_open(&f, strbuf, FA_READ);
+        // we expect either FR_NO_PATH if it's not a directory
+        // or FR_INVALID_NAME if the directory exists (but "" is not a valid file name)
+        if(fr==FR_INVALID_NAME) result=MP_IMPORT_STAT_DIR;
+    }
+
+    lcd_putsRAt(t20, 7, "mp_import_stat:");
+    lcd_putsRAt(t20, 8, path);
+    lcd_putsRAt(t20, 9, result==MP_IMPORT_STAT_FILE?"FILE":result==MP_IMPORT_STAT_DIR?"DIR":"NO_EXIST");
+    lcd_refresh();
+    wait_for_key_press();
+
+    return result;
+}
 
 void program_main() {
 
