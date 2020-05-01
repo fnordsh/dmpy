@@ -13,18 +13,17 @@ def count(n=100):
     dmpy.lcd_putsAt20(3, "Done.")
     dmcp.lcd_refresh()
 
+def keytest():
+    dmcp.key_pop_all()
+    while True:
+        while dmcp.key_empty():
+            pass
+        key = dmcp.key_pop()
+        dmpy.lcd_putsAt20(2, "Key: %d"%key)
+        dmcp.lcd_refresh()
+        if key==33: # EXIT
+            break
 
 dmcp.lcd_clear_buf()
-
-try:
-    import test
-except:
-    pass
-
-try:
-    import OFFIMG
-except:
-    pass
-
-dmcp.lcd_refresh()
+keytest()
 

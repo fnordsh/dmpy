@@ -140,6 +140,68 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_reverse_byte_obj, dmcp_reverse_byte);
 
 // TODO
 
+///// Keyboard / Basic functions /////
+
+// int key_empty()
+STATIC mp_obj_t dmcp_key_empty() {
+    return key_empty() ? mp_const_true : mp_const_false;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_key_empty_obj, dmcp_key_empty);
+
+// int key_pop()
+STATIC mp_obj_t dmcp_key_pop() {
+    return mp_obj_new_int(key_pop());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_key_pop_obj, dmcp_key_pop);
+
+// int key_pop_all()
+STATIC mp_obj_t dmcp_key_pop_all() {
+    key_pop_all();
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_key_pop_all_obj, dmcp_key_pop_all);
+
+// int key_push(int k1)
+STATIC mp_obj_t dmcp_key_push(mp_obj_t k1_obj) {
+    int k1 = mp_obj_get_int(k1_obj);
+    return key_push(k1) ? mp_const_true : mp_const_false;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_key_push_obj, dmcp_key_push);
+
+// int key_tail()
+STATIC mp_obj_t dmcp_key_tail() {
+    return mp_obj_new_int(key_tail());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_key_tail_obj, dmcp_key_tail);
+
+// int key_to_nr(int key)
+STATIC mp_obj_t dmcp_key_to_nr(mp_obj_t key_obj) {
+    int key = mp_obj_get_int(key_obj);
+    return mp_obj_new_int(key_to_nr(key));
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_key_to_nr_obj, dmcp_key_to_nr);
+
+// int sys_last_key()
+STATIC mp_obj_t dmcp_sys_last_key() {
+    return mp_obj_new_int(sys_last_key());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_sys_last_key_obj, dmcp_sys_last_key);
+
+// void wait_for_key_press()
+STATIC mp_obj_t dmcp_wait_for_key_press() {
+    wait_for_key_press();
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(dmcp_wait_for_key_press_obj, dmcp_wait_for_key_press);
+
+// void wait_for_key_release(int tout)
+STATIC mp_obj_t dmcp_wait_for_key_release(mp_obj_t tout_obj) {
+    int tout = mp_obj_get_int(tout_obj);
+    wait_for_key_release(tout);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_wait_for_key_release_obj, dmcp_wait_for_key_release);
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -164,6 +226,17 @@ STATIC const mp_rom_map_elem_t dmcp_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_lcd_set_buf_cleared), MP_ROM_PTR(&dmcp_lcd_set_buf_cleared_obj) },
     { MP_ROM_QSTR(MP_QSTR_lcd_get_buf_cleared), MP_ROM_PTR(&dmcp_lcd_get_buf_cleared_obj) },
     { MP_ROM_QSTR(MP_QSTR_reverse_byte), MP_ROM_PTR(&dmcp_reverse_byte_obj) },
+
+    { MP_ROM_QSTR(MP_QSTR_key_empty), MP_ROM_PTR(&dmcp_key_empty_obj) },
+    { MP_ROM_QSTR(MP_QSTR_key_pop), MP_ROM_PTR(&dmcp_key_pop_obj) },
+    { MP_ROM_QSTR(MP_QSTR_key_pop_all), MP_ROM_PTR(&dmcp_key_pop_all_obj) },
+    { MP_ROM_QSTR(MP_QSTR_key_push), MP_ROM_PTR(&dmcp_key_push_obj) },
+    { MP_ROM_QSTR(MP_QSTR_key_tail), MP_ROM_PTR(&dmcp_key_tail_obj) },
+    { MP_ROM_QSTR(MP_QSTR_key_to_nr), MP_ROM_PTR(&dmcp_key_to_nr_obj) },
+    { MP_ROM_QSTR(MP_QSTR_sys_last_key), MP_ROM_PTR(&dmcp_sys_last_key_obj) },
+    { MP_ROM_QSTR(MP_QSTR_wait_for_key_press), MP_ROM_PTR(&dmcp_wait_for_key_press_obj) },
+    { MP_ROM_QSTR(MP_QSTR_wait_for_key_release), MP_ROM_PTR(&dmcp_wait_for_key_release_obj) },
+
 };
 STATIC MP_DEFINE_CONST_DICT(dmcp_module_globals, dmcp_module_globals_table);
 
