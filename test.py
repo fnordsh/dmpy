@@ -9,7 +9,10 @@ dmcp.lcd_refresh()
 for i in range(100):
     dmpy.lcd_putsAt20(2, "Count: %d"%i)
     dmcp.lcd_refresh()
+dmpy.lcd_putsAt20(3, "Done.")
+dmcp.lcd_refresh()
 
+raise ValueError("test exception")
 
 #dmpy.lcd_putsAt20(3, "Heap free: %d, alloc: %d  "%(gc.mem_free(), gc.mem_alloc()))
-dmcp.lcd_refresh()
+
