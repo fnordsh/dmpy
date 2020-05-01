@@ -180,9 +180,16 @@ void program_main() {
             filebuf[fsize]=0;
             snprintf(strbuf, 128, "read %u bytes", read_bytes);
             lcd_putsAt(t24, 3, strbuf);
-            lcd_putsAt(t24, 4, "press any key to start");
+            lcd_putsAt(t24, 4, "press any key except EXIT to start");
             lcd_refresh();
-            wait_for_key_press();
+            
+            int key;
+            while(!(key=runner_get_key(NULL))) ;
+            if(key == KEY_EXIT) {
+                free(filebuf);
+                mp_deinit();
+                return;
+            }
 
             mp_obj_t exc = (mp_obj_t) execute_from_str(filebuf);
             if(exc) {
