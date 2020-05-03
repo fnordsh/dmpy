@@ -1,6 +1,8 @@
 # .gitignore
 
 .dep
+.vscode
+__pycache__
 build
 build-libmicropython
 
