@@ -120,12 +120,6 @@ mp_import_stat_t mp_import_stat(const char *path) {
         if(fr==FR_INVALID_NAME) result=MP_IMPORT_STAT_DIR;
     }
 
-    lcd_putsRAt(t20, 7, "mp_import_stat:");
-    lcd_putsRAt(t20, 8, path);
-    lcd_putsRAt(t20, 9, result==MP_IMPORT_STAT_FILE?"FILE":result==MP_IMPORT_STAT_DIR?"DIR":"NO_EXIST");
-    lcd_refresh();
-    wait_for_key_press();
-
     return result;
 }
 
