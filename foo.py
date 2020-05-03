@@ -4,5 +4,5 @@ def bar(x):
     if x==23:
         return 42
     else:
-        return x*x
+        return 23*42/x
 
