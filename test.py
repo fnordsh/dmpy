@@ -29,9 +29,9 @@ dmcp.lcd_clear_buf()
 try:
     dmpy.lcd_putsAt20(2, "import foo:")
     import foo
-    dmpy.lcd_putsAt20(3, "%d"%(foo.bar(23)))
-    
+    dmpy.lcd_putsAt20(3, "ok")
+    dmpy.lcd_putsAt20(4, "%d"%(foo.bar(23)))
+
 except:
     dmpy.lcd_putsAt20(3, "fail")
     pass
-

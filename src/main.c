@@ -43,6 +43,24 @@ mp_obj_t execute_from_str(const char *str) {
     }
 }
 
+// execute python code from file
+mp_obj_t execute_from_file(const char *filename) {
+    nlr_buf_t nlr;
+    if (nlr_push(&nlr) == 0) {
+        // Use the empty string as the "filename".
+        qstr src_name = qstr_from_str(filename);
+        mp_lexer_t *lex = mp_lexer_new_from_file(filename);
+        mp_parse_tree_t pt = mp_parse(lex, MP_PARSE_FILE_INPUT);
+        mp_obj_t module_fun = mp_compile(&pt, src_name, false);
+        mp_call_function_0(module_fun);
+        nlr_pop();
+        return 0;
+    } else {
+        // uncaught exception
+        return (mp_obj_t)nlr.ret_val;
+    }
+}
+
 // helper function to display an exception with traceback
 void exception_screen(mp_obj_t exc) {
     lcd_clear_buf();
@@ -150,56 +168,31 @@ void program_main() {
     mp_module_register(MP_QSTR_dmcp, MP_OBJ_FROM_PTR(&module_dmcp));
     mp_module_register(MP_QSTR_dmpy, MP_OBJ_FROM_PTR(&module_dmpy));
 
-    FIL f;
-    FRESULT fr = f_open(&f, "test.py", FA_READ);
-    if(fr) {
-        snprintf(strbuf, 128, "Could not open test.py (%d)", fr);
+    // check for test.py
+    if(mp_import_stat("test.py") != MP_IMPORT_STAT_FILE) {
+        snprintf(strbuf, sizeof(strbuf), "Could not open test.py");
         lcd_putsAt(t24, 2, strbuf);
-        lcd_refresh();
     } else {
-        FSIZE_t fsize = f_size(&f);
-        snprintf(strbuf, 128, "loading test.py (%lu bytes)", fsize);
+        snprintf(strbuf, sizeof(strbuf), "Found test.py");
         lcd_putsAt(t24, 2, strbuf);
+
+        lcd_putsAt(t24, 4, "Press any key except EXIT to start.");
         lcd_refresh();
-
-        char *filebuf = malloc(fsize+1);
-        if(filebuf==0) {
-            snprintf(strbuf, 128, "could not allocate memory");
-            lcd_putsAt(t24, 3, strbuf);
-            lcd_refresh();
-        } else {
-            unsigned int read_bytes;
-            f_read(&f, filebuf, fsize, &read_bytes);
-            f_close(&f);
-            filebuf[fsize]=0;
-            snprintf(strbuf, 128, "read %u bytes", read_bytes);
-            lcd_putsAt(t24, 3, strbuf);
-            lcd_putsAt(t24, 4, "press any key except EXIT to start");
-            lcd_refresh();
-            
-            int key;
-            while(!(key=runner_get_key(NULL))) ;
-            if(key == KEY_EXIT) {
-                free(filebuf);
-                mp_deinit();
-                return;
-            }
-
-            mp_obj_t exc = (mp_obj_t) execute_from_str(filebuf);
+        int key;
+        while(!(key=runner_get_key(NULL))) ;
+        if(key != KEY_EXIT) {
+            mp_obj_t exc = (mp_obj_t) execute_from_file("test.py");
             if(exc) {
                 exception_screen(exc);
             }
-
-            free(filebuf);
         }
     }
-
+    
     // Deinitialise MicroPython.
     mp_deinit();
 
-    lcd_putsRAt(t20, 10, " Press any key to exit.");
+    lcd_putsRAt(t20, 10, "Press any key to exit.");
     lcd_refresh();
     wait_for_key_press();
 
 }
-
