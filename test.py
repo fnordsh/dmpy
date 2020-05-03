@@ -25,5 +25,13 @@ def keytest():
             break
 
 dmcp.lcd_clear_buf()
-keytest()
+
+try:
+    dmpy.lcd_putsAt20(2, "import foo:")
+    import foo
+    dmpy.lcd_putsAt20(3, "%d"%(foo.bar(23)))
+    
+except:
+    dmpy.lcd_putsAt20(3, "fail")
+    pass
 

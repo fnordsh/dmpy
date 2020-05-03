@@ -46,7 +46,7 @@ ASM_SOURCES = $(DMCP_SDK_DIR)/dmcp/startup_pgm.s
 C_INCLUDES += -I. -I$(SRC_DIR) -I$(DMCP_SDK_DIR)/dmcp
 
 # C sources
-C_SOURCES += $(SRC_DIR)/main.c $(SRC_DIR)/module_dmcp.c $(SRC_DIR)/module_dmpy.c
+C_SOURCES += $(SRC_DIR)/main.c $(SRC_DIR)/module_dmcp.c $(SRC_DIR)/module_dmpy.c $(SRC_DIR)/reader.c
 
 # C++ sources
 #CXX_SOURCES += src/xxx.cc
