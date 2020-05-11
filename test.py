@@ -30,8 +30,14 @@ try:
     dmpy.lcd_putsAt20(2, "import foo:")
     import foo
     dmpy.lcd_putsAt20(3, "ok")
-    dmpy.lcd_putsAt20(4, "%d"%(foo.bar(23)))
+    dmpy.lcd_putsAt20(4, "%g"%(foo.bar(23)))
 
 except:
     dmpy.lcd_putsAt20(3, "fail")
     pass
+
+dmcp.lcd_refresh()
+dmcp.wait_for_key_press()
+dmpy.lcd_putsAt20(5, "%g"%(foo.bar(0)))
+dmcp.lcd_refresh()
+
