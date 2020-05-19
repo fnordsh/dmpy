@@ -168,12 +168,12 @@ void program_main() {
     mp_module_register(MP_QSTR_dmcp, MP_OBJ_FROM_PTR(&module_dmcp));
     mp_module_register(MP_QSTR_dmpy, MP_OBJ_FROM_PTR(&module_dmpy));
 
-    // check for test.py
-    if(mp_import_stat("test.py") != MP_IMPORT_STAT_FILE) {
-        snprintf(strbuf, sizeof(strbuf), "Could not open test.py");
+    // check for main.py
+    if(mp_import_stat("main.py") != MP_IMPORT_STAT_FILE) {
+        snprintf(strbuf, sizeof(strbuf), "Could not open main.py");
         lcd_putsAt(t24, 2, strbuf);
     } else {
-        snprintf(strbuf, sizeof(strbuf), "Found test.py");
+        snprintf(strbuf, sizeof(strbuf), "Found main.py");
         lcd_putsAt(t24, 2, strbuf);
 
         lcd_putsAt(t24, 4, "Press any key except EXIT to start.");
@@ -181,7 +181,7 @@ void program_main() {
         int key;
         while(!(key=runner_get_key(NULL))) ;
         if(key != KEY_EXIT) {
-            mp_obj_t exc = (mp_obj_t) execute_from_file("test.py");
+            mp_obj_t exc = (mp_obj_t) execute_from_file("main.py");
             if(exc) {
                 exception_screen(exc);
             }

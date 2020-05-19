@@ -8,7 +8,7 @@ So, how does it work then?
 * Use "Load Program" in the DMCP menu to load dmpy.pgm
 * Run Program
 
-When run, DMPY will try to load and execute the file "test.py". When the script ends, DMPY ends, and you are back to the DMCP menu. When an uncaught exception occurs, you will be presented with the exception screen. Then, DMPY ends, and you are back to the DMCP menu. And that's currently all there is to it.
+When run, DMPY will try to load and execute the file "main.py". When the script ends, DMPY ends, and you are back to the DMCP menu. When an uncaught exception occurs, you will be presented with the exception screen. Then, DMPY ends, and you are back to the DMCP menu. And that's currently all there is to it.
 
 In your python code, you can use the modules dmcp and dmpy:  
 * The dmcp module tries to represent the DMCP C API as closely as possible. It is far from complete yet.  
@@ -18,7 +18,7 @@ In your python code, you can use the modules dmcp and dmpy:
 ### What's working already
 
 * General
-    * Loading and running test.py from filesystem
+    * Loading and running main.py from filesystem
     * Importing modules from filesystem
     * Handling uncaught exceptions
 * dmcp module
@@ -28,8 +28,8 @@ In your python code, you can use the modules dmcp and dmpy:
     * basic text output helpers
 
 ### TODO
-* don't read whole file to ram at once
 * file access using open()
+* more dmcp api functions
 * time module
 
 ### Nice to have, maybe later
