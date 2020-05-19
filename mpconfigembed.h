@@ -33,7 +33,7 @@ void shutdown_hook(void);
 #define MICROPY_PORT_DEINIT_FUNC shutdown_hook()
 
 //#define MICROPY_ENABLE_SOURCE_LINE (1)
-#define MICROPY_READER_POSIX       (0)
+//#define MICROPY_READER_POSIX       (0)
 #define MICROPY_READER_VFS         (0)
 #define MICROPY_HAS_FILE_READER    (1)
 //#define MICROPY_FLOAT_IMPL         (MICROPY_FLOAT_IMPL_DOUBLE)
