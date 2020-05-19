@@ -4,5 +4,5 @@
 	branch = master
 [submodule "micropython"]
 	path = micropython
-	url = https://github.com/micropython/micropython
-	branch = master
+	url = https://github.com/fnordsh/micropython.git
+	branch = pr5964-dmpy
