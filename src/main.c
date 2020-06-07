@@ -16,9 +16,8 @@
 #include "py/objmodule.h"
 
 #include "module_dmcp.h"
-#include "module_dmpy.h"
 
-static char *heap;
+void *heap;
 
 // string buffer for snprintf
 char strbuf[128];
@@ -145,9 +144,10 @@ void program_main() {
     lcd_putsR(t24, "MicroPython Test");
     lcd_refresh();
 
-    // Configure stack limit and heap (with our static buffer).
+    // Configure stack limit and heap
     mp_stack_set_limit(40000 * (BYTES_PER_WORD / 4));
-    int heapsize = 16384;
+    //int heapsize = 16384;
+    int heapsize = 65536;
     while ((heap=malloc(heapsize)) == 0) {
         heapsize /= 2;
     }
@@ -163,7 +163,6 @@ void program_main() {
 
     // register modules
     mp_module_register(MP_QSTR_dmcp, MP_OBJ_FROM_PTR(&module_dmcp));
-    mp_module_register(MP_QSTR_dmpy, MP_OBJ_FROM_PTR(&module_dmpy));
 
     // check for main.py
     if(mp_import_stat("main.py") != MP_IMPORT_STAT_FILE) {

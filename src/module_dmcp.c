@@ -138,7 +138,14 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(dmcp_reverse_byte_obj, dmcp_reverse_byte);
 
 ///// LCD and draw functions / Text functions /////
 
-// TODO
+STATIC mp_obj_t dmcp_lcd_putsAt20(mp_obj_t line_obj, mp_obj_t str_obj) {
+    int line = mp_obj_get_int(line_obj);
+    const char* str = mp_obj_str_get_str(str_obj);
+    lcd_putsAt(t20, line, str);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_2(dmcp_lcd_putsAt20_obj, dmcp_lcd_putsAt20);
+
 
 ///// Keyboard / Basic functions /////
 
@@ -227,6 +234,8 @@ STATIC const mp_rom_map_elem_t dmcp_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_lcd_get_buf_cleared), MP_ROM_PTR(&dmcp_lcd_get_buf_cleared_obj) },
     { MP_ROM_QSTR(MP_QSTR_reverse_byte), MP_ROM_PTR(&dmcp_reverse_byte_obj) },
 
+    { MP_ROM_QSTR(MP_QSTR_lcd_putsAt20), MP_ROM_PTR(&dmcp_lcd_putsAt20_obj) },
+
     { MP_ROM_QSTR(MP_QSTR_key_empty), MP_ROM_PTR(&dmcp_key_empty_obj) },
     { MP_ROM_QSTR(MP_QSTR_key_pop), MP_ROM_PTR(&dmcp_key_pop_obj) },
     { MP_ROM_QSTR(MP_QSTR_key_pop_all), MP_ROM_PTR(&dmcp_key_pop_all_obj) },
@@ -245,7 +254,3 @@ const mp_obj_module_t module_dmcp = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&dmcp_module_globals,
 };
-
-// Register the module to make it available in Python
-//MP_REGISTER_MODULE(MP_QSTR_example, example_user_cmodule, MODULE_EXAMPLE_ENABLED);
-
